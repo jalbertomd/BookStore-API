@@ -137,7 +137,7 @@ namespace BookStore_API.Controllers
         }
 
         /// <summary>
-        /// Creates an Author
+        /// Updates an Author
         /// </summary>
         /// <param name="id">Author Id</param>
         /// <param name="authorDTO"></param>
