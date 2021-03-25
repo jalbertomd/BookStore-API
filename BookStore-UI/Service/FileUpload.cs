@@ -27,37 +27,22 @@ namespace BookStore_UI.Service
             }
         }
 
-        public async Task UploadFile(IFileListEntry file, string picName)
-        {
-            try
-            {
-                var ms = new MemoryStream();
-                await file.Data.CopyToAsync(ms);
-
-                var path = $"{_env.WebRootPath}\\uploads\\{picName}";
-
-                using FileStream fs = new(path, FileMode.Create);
-                ms.WriteTo(fs);
-
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-
-        public void UploadFile(IFileListEntry file, MemoryStream msFile, string picName)
+        public async Task UploadFile(Stream msFile, string picName)
         {
             try
             {
                 var path = $"{_env.WebRootPath}\\uploads\\{picName}";
+                var buffer = new byte[4 * 1096];
+                int bytesRead;
+                double totalRead = 0;
 
-                using (FileStream fs = new FileStream(path, FileMode.Create))
+                using FileStream fs = new FileStream(path, FileMode.Create);
+
+                while((bytesRead = await msFile.ReadAsync(buffer)) != 0)
                 {
-                    msFile.WriteTo(fs);
+                    totalRead += bytesRead;
+                    await fs.WriteAsync(buffer);
                 }
-
             }
             catch (Exception ex)
             {
