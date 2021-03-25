@@ -125,7 +125,10 @@
                 var buffer = new byte[resizedImageFile.Size];
                 await resizedImageFile.OpenReadStream().ReadAsync(buffer);
 
-                imageDataURL = $"data:image/png;base64,{buffer}";
+                var imageBase64Data = Convert.ToBase64String(buffer);
+
+                imageDataURL = $"data:image/png;base64,{imageBase64Data}";
+
                 isInvalidFileType = false;
             }
             else
